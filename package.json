@@ -62,8 +62,8 @@
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
-    "vite": "^5.0.11",
-    "vue": "^3.4.13"
+    "vite": ">=5.0.0",
+    "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
     "vue": {
@@ -80,7 +80,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "2.6.2",
     "@types/hash-sum": "^1.0.2",
-    "@types/node": "^20.11.0",
+    "@types/node": "^20.11.5",
     "@types/xmldom": "^0.1.34",
     "@vitejs/plugin-vue": "^5.0.3",
     "@vitest/coverage-v8": "^1.2.0",
@@ -93,6 +93,6 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
     "vitest": "^1.2.0",
-    "vue": "^3.4.13"
+    "vue": "^3.4.14"
   }
 }
