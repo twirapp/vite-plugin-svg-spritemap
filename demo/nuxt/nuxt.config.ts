@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import VitePluginSvgSpritemap from '@tsuwari/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },

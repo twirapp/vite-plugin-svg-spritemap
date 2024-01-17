@@ -12,7 +12,7 @@
     "vue": "^3.4.14"
   },
   "devDependencies": {
-    "@tsuwari/vite-plugin-svg-spritemap": "workspace:*",
+    "@twir/vite-plugin-svg-spritemap": "workspace:*",
     "@vitejs/plugin-vue": "^5.0.3",
     "sass": "^1.69.7",
     "typescript": "^5.3.3",

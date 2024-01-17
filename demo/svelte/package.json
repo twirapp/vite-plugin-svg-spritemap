@@ -10,7 +10,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@tsuwari/vite-plugin-svg-spritemap": "workspace:*",
+    "@twir/vite-plugin-svg-spritemap": "workspace:*",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tsconfig/svelte": "^5.0.2",
     "sass": "^1.69.7",

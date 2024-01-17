@@ -1,5 +1,5 @@
 {
-  "name": "@tsuwari/vite-plugin-svg-spritemap",
+  "name": "@twir/vite-plugin-svg-spritemap",
   "type": "module",
   "version": "2.2.3",
   "packageManager": "pnpm@8.14.1",

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import VitePluginSvgSpritemap from '@tsuwari/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
 
 // https://vitejs.dev/config/
 export default defineConfig({
