@@ -58,11 +58,6 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     transformIndexHtml: {
       order: 'pre',
       handler(html) {
-        html = html.replace(
-          /__spritemap-\d*|__spritemap/g,
-          `__spritemap__${svgManager.hash}`,
-        )
-
         return html.replace(
           '</body>',
           `<script type="module" src="${virtualModuleId}"></script></body>`,
@@ -86,34 +81,15 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     },
   }
 
-  // TODO: fix hmr
   function generateHMR() {
-    const updateElements = `
-    const elements = document.querySelectorAll(
-      '[src*=${spritemapPath}], [href*=${spritemapPath}], [*|href*=${spritemapPath}]'
-    )
-
-    for (let i = 0; i < elements.length; i++) {
-      const el = elements[i]
-      const attributes = ['xlink:href', 'href', 'src']
-      for (const attr of attributes) {
-        if (!el.hasAttribute(attr)) continue
-        const value = el.getAttribute(attr)
-        if (!value) continue
-        const newValue = value.replace(
-          ${spritemapPath}.*#/g,
-          '__spritemap__' + data.id + '#'
-        )
-        el.setAttribute(attr, newValue)
-      }
-    }`
-
-    return `console.debug('[vite-plugin-svg-spritemap]', 'connected.')
+    return `
+      console.debug('[vite-plugin-svg-spritemap]', 'connected.')
       if (import.meta.hot) {
-        import.meta.hot.on('${event}', data => {
+        import.meta.hot.on('${event}', (data) => {
           console.debug('[vite-plugin-svg-spritemap]', 'update')
-          ${updateElements}
+          location.reload()
         })
-      }`
+      }
+    `
   }
 }

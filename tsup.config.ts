@@ -10,7 +10,7 @@ export default defineConfig({
   async onSuccess() {
     await fs.copyFile(
       resolve(__dirname, './src/client.d.ts'),
-      resolve(__dirname, 'dist/client.d.ts')
+      resolve(__dirname, 'dist/client.d.ts'),
     )
   },
 })

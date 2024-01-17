@@ -1,5 +1,4 @@
 import path from 'node:path'
-import type { ExternalOption } from 'rollup'
 import type { Plugin, ResolvedConfig } from 'vite'
 import type { Options, Pattern } from '../types'
 import { SVGManager } from '../svgManager'
@@ -42,7 +41,7 @@ export default function BuildPlugin(iconsPattern: Pattern, options: Options): Pl
       }
     },
     transform(code) {
-      if (typeof options.output !== 'object' || code.indexOf(spritemapPath) === -1)
+      if (typeof options.output !== 'object' || !code.includes(spritemapPath))
         return
 
       // prevent sveltekit rewrite
