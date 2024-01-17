@@ -1,2 +1,2 @@
 /// <reference types="vite/client" />
-/// <reference types="@spiriit/vite-plugin-svg-spritemap/client" />
+/// <reference types="@tsuwari/vite-plugin-svg-spritemap/client" />

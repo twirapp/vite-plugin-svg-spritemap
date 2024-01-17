@@ -9,7 +9,7 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@spiriit/vite-plugin-svg-spritemap": "workspace:*",
+    "@tsuwari/vite-plugin-svg-spritemap": "workspace:*",
     "nuxt": "^3.9.1",
     "sass": "^1.69.7",
     "vue": "^3.4.13",
