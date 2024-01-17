@@ -2,15 +2,16 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import fg from 'fast-glob'
 import { SVGManager } from '../svgManager'
 import type { Options, Pattern } from '../types'
+import { getSpritemapPath } from '../helpers/spritemapPath'
 
 const event = 'vite-plugin-svg-spritemap:update'
 
 export default function DevPlugin(iconsPattern: Pattern, options: Options): Plugin {
   const filterSVG = /\.svg$/
-  const filterCSS = /\.(s?css|styl|less)$/
   const virtualModuleId = '/@vite-plugin-svg-spritemap/client'
   let svgManager: SVGManager
   let config: ResolvedConfig
+  let spritemapPath: string
 
   return <Plugin>{
     name: 'vite-plugin-svg-spritemap:dev',
@@ -18,6 +19,7 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     configResolved(_config) {
       config = _config
       svgManager = new SVGManager(iconsPattern, options, config)
+      spritemapPath = getSpritemapPath(_config)
     },
     resolveId(id) {
       if (id === virtualModuleId)
@@ -25,7 +27,7 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     },
     load(id) {
       if (id === virtualModuleId)
-        return generateHMR(svgManager.spritemap)
+        return generateHMR()
     },
     async buildStart() {
       await svgManager.updateAll()
@@ -41,7 +43,7 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url?.startsWith('/__spritemap')) {
+        if (req.url?.startsWith(spritemapPath)) {
           res.statusCode = 200
           res.setHeader('Content-Type', 'image/svg+xml')
           res.setHeader('Access-Control-Allow-Origin', '*')
@@ -78,41 +80,17 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
         event,
         data: {
           id: svgManager.hash,
-          spritemap: options.injectSVGOnDev ? svgManager.spritemap : '',
+          spritemap: '',
         },
       })
     },
-    transform(code, id) {
-      if (!id.match(filterCSS))
-        return { code, map: null }
-
-      return {
-        code: code.replace(
-          /__spritemap-\d*|__spritemap/g,
-        `__spritemap__${svgManager.hash}`,
-        ),
-        map: null,
-      }
-    },
   }
 
-  function generateHMR(spritemap?: string) {
-    const injectSvg = `
-    const injectSvg = (data) => {
-      const oldWrapper = document.getElementById('vite-plugin-svg-spritemap')
-      if (oldWrapper)
-        oldWrapper.remove()
-
-      const wrapper = document.createElement('div')
-      wrapper.innerHTML = data.spritemap
-      wrapper.id = 'vite-plugin-svg-spritemap'
-      wrapper.style.display = 'none'
-      document.body.append(wrapper)
-    }`
-
+  // TODO: fix hmr
+  function generateHMR() {
     const updateElements = `
     const elements = document.querySelectorAll(
-      '[src*=__spritemap], [href*=__spritemap], [*|href*=__spritemap]'
+      '[src*=${spritemapPath}], [href*=${spritemapPath}], [*|href*=${spritemapPath}]'
     )
 
     for (let i = 0; i < elements.length; i++) {
@@ -123,7 +101,7 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
         const value = el.getAttribute(attr)
         if (!value) continue
         const newValue = value.replace(
-          /__spritemap.*#/g,
+          ${spritemapPath}.*#/g,
           '__spritemap__' + data.id + '#'
         )
         el.setAttribute(attr, newValue)
@@ -131,13 +109,10 @@ export default function DevPlugin(iconsPattern: Pattern, options: Options): Plug
     }`
 
     return `console.debug('[vite-plugin-svg-spritemap]', 'connected.')
-      ${options.injectSVGOnDev ? injectSvg : ''}
-      ${options.injectSVGOnDev ? `injectSvg(${JSON.stringify({ spritemap })})` : ''}
       if (import.meta.hot) {
         import.meta.hot.on('${event}', data => {
           console.debug('[vite-plugin-svg-spritemap]', 'update')
           ${updateElements}
-          ${options.injectSVGOnDev ? 'injectSvg(data)' : ''}
         })
       }`
   }

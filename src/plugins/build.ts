@@ -4,6 +4,7 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import type { Options, Pattern } from '../types'
 import { SVGManager } from '../svgManager'
 import { getFileName } from '../helpers/filename'
+import { getSpritemapPath } from '../helpers/spritemapPath'
 
 export default function BuildPlugin(iconsPattern: Pattern, options: Options): Plugin {
   let config: ResolvedConfig
@@ -73,18 +74,16 @@ export default function BuildPlugin(iconsPattern: Pattern, options: Options): Pl
       if (typeof options.output !== 'object' || !spritemapFilter.test(code))
         return
 
-      const { join } = path.posix
-
       // prevent sveltekit rewrite
       const base = config.base.startsWith('.')
         ? config.base.substring(1)
         : config.base
 
+      const spriteMapPath = getSpritemapPath(config)
+      const filePath = path.posix.join(base, this.getFileName(fileRef))
+
       return {
-        code: code.replace(
-          spritemapFilter,
-          join(base, this.getFileName(fileRef)),
-        ),
+        code: code.replaceAll(spriteMapPath, filePath),
         map: null,
       }
     },

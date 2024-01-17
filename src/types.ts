@@ -1,11 +1,6 @@
 import type { Config as SvgoConfig } from 'svgo'
-import './types.d.ts'
-
-type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 export type Pattern = string[] | string
-
-export type StylesLang = 'less' | 'scss' | 'styl' | 'css'
 
 export interface UserOptions {
   /**
@@ -21,32 +16,9 @@ export interface UserOptions {
    * @default true
    */
   output?:
-    | WithOptional<OptionsOutput, 'name' | 'use' | 'view'>
+    | Partial<OptionsOutput>
     | string
     | boolean
-  /**
-   * Define the prefix uses for sprite id in symbol/use/view. Set to false to disable the prefix
-   * @default 'sprite-'
-   */
-  prefix?: string | false
-  /**
-   * Styles generation options. Put the relative file destination or a style object.
-   * @default false
-   */
-  styles?:
-    | WithOptional<OptionsStyles, 'lang'>
-    | string
-    | false
-  /**
-   * Function allowing to customize the id of each symbol of the spritemap svg.
-   * @default name => options.prefix + name
-   */
-  idify?: (name: string, svg: SvgMapObject) => string
-  /**
-   * Inject the SVG Spritemap inside the body on dev
-   * @default false
-   */
-  injectSVGOnDev?: boolean
 }
 
 export interface OptionsOutput {
@@ -73,25 +45,9 @@ export interface OptionsOutput {
   view: boolean
 }
 
-export interface OptionsStyles {
-  /**
-   * Filename of the style file
-   * @example 'src/scss/spritemap.scss'
-   */
-  filename: string
-  /**
-   * The CSS processor language
-   */
-  lang: StylesLang
-}
-
 export interface Options {
   svgo: SvgoConfig | false
-  styles: OptionsStyles | false
   output: OptionsOutput | false
-  prefix: string | false
-  injectSVGOnDev: boolean
-  idify: (name: string, svg: SvgMapObject) => string
 }
 
 export interface SvgMapObject {

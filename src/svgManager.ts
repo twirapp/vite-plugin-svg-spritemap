@@ -1,11 +1,10 @@
 import { promises as fs } from 'node:fs'
-import { basename, resolve } from 'node:path'
+import { basename } from 'node:path'
 import fg from 'fast-glob'
 import { optimize } from 'svgo'
 import { DOMImplementation, DOMParser, XMLSerializer } from '@xmldom/xmldom'
 import hash_sum from 'hash-sum'
 import type { ResolvedConfig } from 'vite'
-import { Styles } from './styles/styles'
 import { calculateY } from './helpers/calculateY'
 import { cleanAttributes } from './helpers/cleanAttributes'
 import type { Options, Pattern, SvgMapObject } from './types'
@@ -27,6 +26,7 @@ export class SVGManager {
   }
 
   async update(filePath: string, loop = false) {
+    const folderName = filePath.split('/').at(-2) || 'icon'
     const name = basename(filePath, '.svg')
     if (!name)
       return false
@@ -68,7 +68,7 @@ export class SVGManager {
         svg = optimizedSvg.data
     }
 
-    this._svgs.set(name, {
+    this._svgs.set(`${folderName}-${name}`, {
       width,
       height,
       viewBox,
@@ -76,10 +76,8 @@ export class SVGManager {
       source: svg,
     })
 
-    if (!loop) {
+    if (!loop)
       this.hash = hash_sum(this.spritemap)
-      await this.createFileStyle()
-    }
   }
 
   async updateAll() {
@@ -91,7 +89,6 @@ export class SVGManager {
     }
 
     this.hash = hash_sum(this.spritemap)
-    await this.createFileStyle()
   }
 
   get spritemap() {
@@ -133,7 +130,7 @@ export class SVGManager {
       attributes.forEach((attr) => {
         symbol.setAttribute(attr.name, attr.value)
       })
-      symbol.setAttribute('id', this._options.idify(name, svg))
+      symbol.setAttribute('id', name)
       symbol.setAttribute('viewBox', svg.viewBox.join(' '))
 
       // add childs
@@ -147,7 +144,7 @@ export class SVGManager {
       // use
       if (this._options.output && this._options.output.use) {
         const use = DOM.createElement('use')
-        use.setAttribute('xlink:href', `#${this._options.prefix}${name}`)
+        use.setAttribute('xlink:href', `#${name}`)
         use.setAttribute('width', svg.width.toString())
         use.setAttribute('height', svg.height.toString())
         use.setAttribute('y', y.toString())
@@ -164,7 +161,7 @@ export class SVGManager {
         attributes.forEach((attr) => {
           view.setAttribute(attr.name, attr.value)
         })
-        view.setAttribute('id', `${this._options.prefix + name}-view`)
+        view.setAttribute('id', `${name}-view`)
         view.setAttribute(
           'viewBox',
           `0 ${Math.max(0, y)} ${svg.width} ${svg.height}`,
@@ -177,16 +174,6 @@ export class SVGManager {
     })
 
     return Serializer.serializeToString(spritemap)
-  }
-
-  private async createFileStyle() {
-    if (typeof this._options.styles !== 'object')
-      return
-    const styleGen: Styles = new Styles(this._svgs, this._options)
-    const content = await styleGen.generate()
-    const path = resolve(this._config.root, this._options.styles.filename)
-
-    await fs.writeFile(path, content, 'utf8')
   }
 
   public get svgs() {

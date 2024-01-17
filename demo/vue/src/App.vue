@@ -1,32 +1,30 @@
 <script setup lang="ts">
-import SpiriitView from './../../_fixtures/icons/spiriit.svg?view'
-import SpiriitUse from './../../_fixtures/icons/spiriit.svg?use'
-import ViteView from './../../_fixtures/icons/vite.svg?view'
-import ViteUse from './../../_fixtures/icons/vite.svg?use'
+import Flag1 from './icons/flags1/flag1.svg?use'
+import Flag2 from './icons/flags1/flag2.svg?use'
+
+import Flag3 from './icons/flags2/flag1.svg?view'
+import Flag4 from './icons/flags2/flag2.svg?view'
+
+import Flag5 from './icons/flag1.svg?use'
+import Flag6 from './icons/flag2.svg?view'
 </script>
 
 <template>
-  <h1>Vite Plugin SVG Spritemap Demo with VueJS</h1>
-
-  <p>This is a demo of the Vite Plugin SVG Spritemap working with VueJS component.</p>
-
-  <div class="example">
-    <h2>Spritemap with &lt;use> via Vue component</h2>
-
-    <div class="example__svgs">
-      <SpiriitUse class="icon icon-spiriit">
-        <title>My superb logo</title>
-      </SpiriitUse>
-      <ViteUse class="icon icon-vite" />
-    </div>
+  <div>
+    <h4>/icons/flags1/*.svg (use)</h4>
+    <Flag1 style="width: 32px; height: 24px;" />
+    <Flag2 style="width: 32px; height: 24px;" />
   </div>
 
-  <div class="example">
-    <h2>Spritemap with &lt;img> (fragments) via Vue component</h2>
+  <div>
+    <h4>/icons/flags2/*.svg (view)</h4>
+    <Flag3 />
+    <Flag4 />
+  </div>
 
-    <div class="example__svgs">
-      <SpiriitView alt="" class="icon icon-spiriit" />
-      <ViteView alt="" class="icon icon-vite" />
-    </div>
+  <div>
+    <h4>/icons/*.svg (view)</h4>
+    <Flag5 style="width: 32px; height: 24px;" />
+    <Flag6 />
   </div>
 </template>

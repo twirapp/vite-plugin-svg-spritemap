@@ -24,9 +24,7 @@ beforeAll(async () => {
       },
     },
     plugins: [
-      VitePluginSvgSpritemap(getPath('./fixtures/basic/svg/*.svg'), {
-        styles: getPath('./fixtures/basic/styles/spritemap.css'),
-      }),
+      VitePluginSvgSpritemap(getPath('./fixtures/basic/svg/*.svg')),
     ],
   })
   await server.listen()

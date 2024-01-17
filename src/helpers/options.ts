@@ -1,12 +1,6 @@
-import type { Options, StylesLang, UserOptions } from '../types'
+import type { Options, UserOptions } from '../types'
 
 export function createOptions(options: UserOptions = {}): Options {
-  let prefix: Options['prefix'] = 'sprite-'
-  if (options.prefix === false)
-    prefix = ''
-  else if (typeof options.prefix === 'string')
-    prefix = options.prefix
-
   // Default svgo options
   let svgo: Options['svgo'] = {
     plugins: [
@@ -18,9 +12,6 @@ export function createOptions(options: UserOptions = {}): Options {
             removeEmptyAttrs: false,
             moveGroupAttrsToElems: false,
             collapseGroups: false,
-            cleanupIds: {
-              preservePrefixes: [prefix],
-            },
           },
         },
       },
@@ -28,37 +19,6 @@ export function createOptions(options: UserOptions = {}): Options {
   }
   if (typeof options.svgo === 'object' || options.svgo === false)
     svgo = options.svgo
-
-  let styles: Options['styles'] = false
-  const stylesLang = ['css', 'scss', 'less', 'styl']
-  if (typeof options.styles === 'string') {
-    let lang = options.styles.split('.').pop() as StylesLang | undefined
-    const stylesLang = ['css', 'scss', 'less', 'styl']
-
-    if (typeof lang === 'undefined' || !stylesLang.includes(lang)) {
-      lang = 'css'
-      console.warn(
-        '[vite-plugin-spritemap]',
-        'Invalid styles lang, fallback to css',
-      )
-    }
-
-    styles = {
-      filename: options.styles,
-      lang,
-    }
-  }
-  else if (
-    typeof options.styles === 'object'
-    && typeof options.styles.filename === 'string'
-    && typeof options.styles.lang === 'string'
-    && stylesLang.includes(options.styles.lang)
-  ) {
-    styles = {
-      filename: options.styles.filename,
-      lang: options.styles.lang,
-    }
-  }
 
   let output: Options['output'] = {
     filename: '[name].[hash][extname]',
@@ -74,29 +34,21 @@ export function createOptions(options: UserOptions = {}): Options {
   }
   else if (typeof options.output === 'object') {
     output = {
-      filename: options.output.filename,
-      name: options.output.name || 'spritemap.svg',
+      filename: options.output.filename || output.filename,
+      name: options.output.name || output.name,
       use:
-        typeof options.output.use !== 'undefined' ? options.output.use : true,
+        typeof options.output.use !== 'undefined'
+          ? options.output.use
+          : true,
       view:
-        typeof options.output.view !== 'undefined' ? options.output.view : true,
+        typeof options.output.view !== 'undefined'
+          ? options.output.view
+          : true,
     }
   }
-
-  const injectSVGOnDev = options.injectSVGOnDev || false
-
-  // Idify
-  let idify: UserOptions['idify'] = name => prefix + name
-
-  if (typeof options.idify === 'function')
-    idify = options.idify
 
   return {
     svgo,
     output,
-    prefix,
-    styles,
-    injectSVGOnDev,
-    idify,
   } satisfies Options
 }
