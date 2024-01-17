@@ -11,44 +11,15 @@ export default function BuildPlugin(iconsPattern: Pattern, options: Options): Pl
   let fileRef: string
   let fileName: string
   let svgManager: SVGManager
-  const spritemapFilter = /\/__spritemap/g
-  const pluginExternal: ExternalOption = /\/__spritemap/
+  let spritemapPath: string
 
   return <Plugin>{
     name: 'vite-plugin-svg-spritemap:build',
     apply: 'build',
-    config(config) {
-      const configExternal = config.build?.rollupOptions?.external
-      let finalExternal: ExternalOption = pluginExternal
-
-      if (Array.isArray(configExternal)) {
-        configExternal.push(pluginExternal)
-        finalExternal = configExternal
-      }
-      else if (typeof configExternal === 'string' || typeof configExternal === 'object') {
-        finalExternal = [configExternal, pluginExternal]
-      }
-      else if (typeof configExternal === 'function') {
-        finalExternal = (source, importer, isResolved) => {
-          if (source.match(pluginExternal))
-            return true
-
-          const res = configExternal(source, importer, isResolved)
-          return res
-        }
-      }
-
-      return {
-        build: {
-          rollupOptions: {
-            external: finalExternal,
-          },
-        },
-      }
-    },
     configResolved(_config) {
       config = _config
       svgManager = new SVGManager(iconsPattern, options, config)
+      spritemapPath = getSpritemapPath(_config)
     },
     async buildStart() {
       await svgManager.updateAll()
@@ -71,7 +42,7 @@ export default function BuildPlugin(iconsPattern: Pattern, options: Options): Pl
       }
     },
     transform(code) {
-      if (typeof options.output !== 'object' || !spritemapFilter.test(code))
+      if (typeof options.output !== 'object' || code.indexOf(spritemapPath) === -1)
         return
 
       // prevent sveltekit rewrite
@@ -79,11 +50,10 @@ export default function BuildPlugin(iconsPattern: Pattern, options: Options): Pl
         ? config.base.substring(1)
         : config.base
 
-      const spriteMapPath = getSpritemapPath(config)
       const filePath = path.posix.join(base, this.getFileName(fileRef))
 
       return {
-        code: code.replaceAll(spriteMapPath, filePath),
+        code: code.replaceAll(spritemapPath, filePath),
         map: null,
       }
     },
