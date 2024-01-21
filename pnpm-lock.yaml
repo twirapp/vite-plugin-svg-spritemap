@@ -75,7 +75,7 @@ importers:
 
   demo/basic:
     devDependencies:
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       autoprefixer:
@@ -105,7 +105,7 @@ importers:
 
   demo/nuxt:
     devDependencies:
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       nuxt:
@@ -130,7 +130,7 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
     devDependencies:
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       autoprefixer:
@@ -163,7 +163,7 @@ importers:
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.2
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       sass:
@@ -196,7 +196,7 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
         version: 3.0.1(svelte@4.2.8)(vite@5.0.11)
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       sass:
@@ -224,7 +224,7 @@ importers:
         specifier: ^3.4.14
         version: 3.4.14(typescript@5.3.3)
     devDependencies:
-      '@twir/vite-plugin-svg-spritemap':
+      '@twirapp/vite-plugin-svg-spritemap':
         specifier: workspace:*
         version: link:../..
       '@vitejs/plugin-vue':

@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
-import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twirapp/vite-plugin-svg-spritemap'
 
 // https://vitejs.dev/config/
 export default defineConfig({

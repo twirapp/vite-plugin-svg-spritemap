@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/@twir/vite-plugin-svg-spritemap)](https://www.npmjs.com/package/@twir/vite-plugin-svg-spritemap) [![node-current](https://img.shields.io/node/v/@twir/vite-plugin-svg-spritemap)](https://nodejs.org/) [![Coverage Status](https://coveralls.io/repos/github/SpiriitLabs/vite-plugin-svg-spritemap/badge.svg?branch=main)](https://coveralls.io/github/SpiriitLabs/vite-plugin-svg-spritemap?branch=main)
+[![npm](https://img.shields.io/npm/v/@twirapp/vite-plugin-svg-spritemap)](https://www.npmjs.com/package/@twirapp/vite-plugin-svg-spritemap) [![node-current](https://img.shields.io/node/v/@twirapp/vite-plugin-svg-spritemap)](https://nodejs.org/) [![Coverage Status](https://coveralls.io/repos/github/SpiriitLabs/vite-plugin-svg-spritemap/badge.svg?branch=main)](https://coveralls.io/github/SpiriitLabs/vite-plugin-svg-spritemap?branch=main)
 
 # vite-plugin-svg-spritemap
 
@@ -21,13 +21,13 @@ The plugin outputs can be fully configurable through [options](#🛠-options).
 ## 📦 Install
 
 ```shell
-npm i -D @twir/vite-plugin-svg-spritemap
+npm i -D @twirapp/vite-plugin-svg-spritemap
 
 # yarn
-yarn add -D @twir/vite-plugin-svg-spritemap
+yarn add -D @twirapp/vite-plugin-svg-spritemap
 
 # pnpm
-pnpm add -D @twir/vite-plugin-svg-spritemap
+pnpm add -D @twirapp/vite-plugin-svg-spritemap
 ```
 
 ## 👨‍💻 Usage
@@ -36,7 +36,7 @@ By default, the plugin will generate a spritemap to support all methods describe
 
 ```ts
 // vite.config.js / vite.config.ts
-import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twirapp/vite-plugin-svg-spritemap'
 
 export default {
   plugins: [VitePluginSvgSpritemap('./src/icons/*.svg')]
@@ -69,7 +69,7 @@ First you need to adjust the plugin options to set the output styles. For full s
 
 ```ts
 // vite.config.js / vite.config.ts
-import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twirapp/vite-plugin-svg-spritemap'
 
 export default {
   plugins: [
@@ -144,7 +144,7 @@ For typescript, you need to load the type definitions inside `vite-env.d.ts` to 
 
 ```ts
 /// <reference types="vite/client" />
-/// <reference types="@twir/vite-plugin-svg-spritemap/client" />
+/// <reference types="@twirapp/vite-plugin-svg-spritemap/client" />
 ```
 
 ### Usage with Nuxt 3
@@ -156,7 +156,7 @@ You just need to install the plugin and set it in the right place for Nuxt 3.
 
 ```ts
 // nuxt.config.ts
-import VitePluginSvgSpritemap from '@twir/vite-plugin-svg-spritemap'
+import VitePluginSvgSpritemap from '@twirapp/vite-plugin-svg-spritemap'
 
 export default defineNuxtConfig({
   vite: {
@@ -171,10 +171,10 @@ You can see the usage in the [corresponding demo folder](/demo/nuxt/app.vue).
 
 #### Typescript
 
-For usage with TypeScript, you will need to add in a `.d.ts` file the reference type `/// <reference types="@twir/vite-plugin-svg-spritemap/dist/client" />` (see [issue #38](https://github.com/SpiriitLabs/vite-plugin-svg-spritemap/issues/38)) to use `?use`/`?view` query.
+For usage with TypeScript, you will need to add in a `.d.ts` file the reference type `/// <reference types="@twirapp/vite-plugin-svg-spritemap/dist/client" />` (see [issue #38](https://github.com/SpiriitLabs/vite-plugin-svg-spritemap/issues/38)) to use `?use`/`?view` query.
 
 ```ts
-/// <reference types="@twir/vite-plugin-svg-spritemap/dist/client" />
+/// <reference types="@twirapp/vite-plugin-svg-spritemap/dist/client" />
 ```
 
 ### Use for backend integration
@@ -240,7 +240,7 @@ The first argument is a glob path (using [fast-glob](https://github.com/mrmlnc/f
 
 ```ts
 // vite.config.js / vite.config.ts
-import VitePluginSVGSpritemap from '@twir/vite-plugin-svg-spritemap'
+import VitePluginSVGSpritemap from '@twirapp/vite-plugin-svg-spritemap'
 
 export default {
   plugins: [
